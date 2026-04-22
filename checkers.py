@@ -1,1 +1,1 @@
-print("Boshladik")
+print("Botmisiz xatoku bu")
