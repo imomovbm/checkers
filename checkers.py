@@ -1,7 +1,25 @@
-import tkinter as tk
+from tkinter import *
 
-root = tk.Tk(className='Checkers_TJA', useTk=1)
-label = tk.Label(root, text="Checkers coming...!")
+root = Tk(className='Checkers_TJA', useTk=1)
+label = Label(root, text="Checkers coming...!")
 label.pack()
+
+C = Canvas(root, bg="yellow",
+           height=250, width=300)
+
+line = C.create_line(108, 120,
+                     320, 40,
+                     fill="green")
+
+arc = C.create_arc(180, 150, 80,
+                   210, start=0,
+                   extent=220,
+                   fill="red")
+
+oval = C.create_oval(80, 30, 140,
+                     150,
+                     fill="blue")
+
+C.pack()
 
 root.mainloop()
