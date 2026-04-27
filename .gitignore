@@ -12,6 +12,7 @@ staticfiles/
 static/
 # Virtualenv
 venv/
+linvenv/
 env/
 
 # Environment variables
