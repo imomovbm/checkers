@@ -36,9 +36,11 @@ def check_square_address(coordinate):
     for piecePosition in chess_square_address:
         square_x,square_y = chess_square_address[piecePosition]
         if square_x-half_square < x < square_x+half_square and square_y - half_square < y < square_y + half_square:
+            print(piecePosition)
             return piecePosition
 
-pieces_address = {
+# address of pieces
+logical_address_of_pieces = {
     'a1': 1,'a2': 0,'a3': 1,'a4': 0,'a5': 0,'a6': 0,'a7': -1,'a8': 0,
     'b1': 0,'b2': 1,'b3': 0,'b4': 0,'b5': 0,'b6': -1,'b7': 0,'b8': -1,
     'c1': 1,'c2': 0,'c3': 1,'c4': 0,'c5': 0,'c6': 0,'c7': -1,'c8': 0,
@@ -48,34 +50,45 @@ pieces_address = {
     'g1': 1,'g2': 0,'g3': 1,'g4': 0,'g5': 0,'g6': 0,'g7': -1,'g8': 0,
     'h1': 0,'h2': 1,'h3': 0,'h4': 0,'h5': 0,'h6': -1,'h7': 0,'h8': -1,
 }
+# shapes_id
+id_canvas_shapes = {}
 
 def draw_piece(cx,cy,color):
     r = 0.1*base_size
     return C.create_oval(cx - r, cy - r, cx + r, cy + r, fill=color)
 
 def set_pieces():
-    for address in pieces_address:
+    for address in logical_address_of_pieces:
         x,y = chess_square_address[address]
-        if pieces_address[address] == 1:
+        if logical_address_of_pieces[address] == 1:
             color = 'white'
-            pieces_address[address] = draw_piece(x,y, color)
-        elif pieces_address[address] == -1:
+            id_canvas_shapes[address] = draw_piece(x,y, color)
+        elif logical_address_of_pieces[address] == -1:
             color = 'black'
-            pieces_address[address] = draw_piece(x,y, color)
+            id_canvas_shapes[address] = draw_piece(x,y, color)
 
 set_pieces()
 # piece addresses print(pieces_address)
 
+selected_piece = 0
+turn = 'white'
 def check_click(event):
+    global selected_piece
     x = event.x
     y = event.y
     # check the coordinate that was clicked    print(f"Clicked at: {event.x}, {event.y}")
 
     # check the chess board address that was clicked    print(check_square_address((x, y)))
-    selected_piece = check_square_address(x,y)
-    return selected_piece
-     # C.delete(pieces_address[check_square_address((x, y))])
-     # set_pieces()
+    clicked_position = check_square_address((x,y))
+    if clicked_position:
+        if selected_piece != 0:
+            if clicked_position in id_canvas_shapes:
+                C.delete(id_canvas_shapes[clicked_position])
+                logical_address_of_pieces[clicked_position] = 1
+
+        if logical_address_of_pieces[clicked_position] in [-1,1]:
+            selected_piece = logical_address_of_pieces[clicked_position]
+        
 
 
 C.pack()
